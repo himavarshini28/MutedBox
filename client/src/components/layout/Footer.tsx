@@ -61,11 +61,9 @@ export default function Footer() {
           </div>
           
           <div>
-            <h4 className="text-text font-medium mb-3">Product</h4>
-            <ul className="space-y-2">
+            <h4 className="text-text font-medium mb-3">Product</h4>            <ul className="space-y-2">
               <li><Link href="/features" className="text-text-muted text-sm hover:text-primary transition-colors">Features</Link></li>
               <li><Link href="/pricing" className="text-text-muted text-sm hover:text-primary transition-colors">Pricing</Link></li>
-              <li><Link href="/testimonials" className="text-text-muted text-sm hover:text-primary transition-colors">Testimonials</Link></li>
               <li><Link href="/faq" className="text-text-muted text-sm hover:text-primary transition-colors">FAQ</Link></li>
             </ul>
           </div>

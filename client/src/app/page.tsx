@@ -6,8 +6,7 @@ import HowItWorksSection from '@/components/landing/HowItWorksSection';
 import TestimonialsSection from '@/components/landing/TestimonialsSection';
 import CtaSection from '@/components/landing/CtaSection';
 
-export default function Home() {
-  return (
+export default function Home() {  return (
     <>
       <HeroSection />
       <FeaturesSection />
