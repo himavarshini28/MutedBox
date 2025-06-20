@@ -1,12 +1,36 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
+import Header from '@/components/layout/Header';
+import Footer from '@/components/layout/Footer';
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ 
+  subsets: ['latin'],
+  variable: '--font-inter',
+});
 
 export const metadata: Metadata = {
   title: 'MutedBox - Anonymous Feedback Platform',
-  description: 'Collect anonymous feedback with unique links',
+  description: 'Collect and manage anonymous feedback with beautiful, unique links',
+  keywords: ['feedback', 'anonymous feedback', 'feedback collection', 'anonymous reviews'],
+  authors: [{ name: 'MutedBox Team' }],
+  creator: 'MutedBox',
+  icons: {
+    icon: '/favicon.ico',
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: 'https://mutedbox.com',
+    title: 'MutedBox - Anonymous Feedback Platform',
+    description: 'Collect anonymous feedback with unique links',
+    siteName: 'MutedBox',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'MutedBox - Anonymous Feedback Platform',
+    description: 'Collect anonymous feedback with unique links',
+  },
 };
 
 export default function RootLayout({
@@ -15,9 +39,13 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={`${inter.className} bg-background text-text`}>
-        {children}
+    <html lang="en" className="dark">
+      <body className={`${inter.className} bg-background text-text min-h-screen flex flex-col`}>
+        <Header />
+        <main className="flex-grow">
+          {children}
+        </main>
+        <Footer />
       </body>
     </html>
   );
