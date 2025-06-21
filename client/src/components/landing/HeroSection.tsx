@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, MessageSquare, Lock, Users, Key } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function HeroSection() {
   const ref = useRef(null);
@@ -11,12 +12,15 @@ export default function HeroSection() {
     target: ref,
     offset: ["start start", "end start"],
   });
-
+  const router = useRouter();
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "40%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const handleCreateLink=()=>{
+    router.push('/create-feedback');
+  }
 
   return (
-    <section 
+    <section
       ref={ref}
       className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-20 md:pt-28"
     >
@@ -29,7 +33,7 @@ export default function HeroSection() {
       </div>
 
       {/* Content */}
-      <motion.div 
+      <motion.div
         style={{ y, opacity }}
         className="container mx-auto px-4 z-10 relative"
       >
@@ -41,7 +45,8 @@ export default function HeroSection() {
             className="mb-6"
           >
             <span className="inline-flex items-center px-3 py-1 text-xs rounded-full bg-primary/10 text-primary border border-primary/20 mb-4">
-              <span className="animate-pulse mr-2">•</span> Collect honest feedback, anonymously
+              <span className="animate-pulse mr-2">•</span> Collect honest feedback,
+              anonymously
             </span>
           </motion.div>
 
@@ -62,8 +67,8 @@ export default function HeroSection() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="text-xl md:text-2xl text-text-muted max-w-3xl mx-auto mb-10"
           >
-            Create a unique link, share it, and collect honest feedback 
-            without revealing who said what. No signup required.
+            Create a unique link, share it, and collect honest feedback
+            without revealing who said what.
           </motion.p>
 
           <motion.div
@@ -71,8 +76,7 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.6 }}
             className="flex flex-col sm:flex-row gap-4 justify-center"
-          >
-            <Button size="xl" variant="gradient" className="glow group">
+          >            <Button size="xl" variant="gradient" className="glow group" onClick={handleCreateLink}>
               Create Feedback Link
               <ArrowRight size={18} className="ml-2 group-hover:translate-x-1 transition-transform" />
             </Button>
@@ -102,23 +106,7 @@ export default function HeroSection() {
           </motion.div>
         </div>
       </motion.div>
-      
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.2, duration: 1 }}
-        className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center"
-      >
-        <p className="text-text-muted text-sm mb-2">Scroll to explore</p>
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ repeat: Infinity, duration: 2 }}
-          className="w-6 h-10 rounded-full border-2 border-text-muted flex items-start justify-center p-1"
-        >
-          <motion.div className="w-1.5 h-1.5 bg-text-muted rounded-full" />
-        </motion.div>
-      </motion.div>
+
     </section>
   );
 }

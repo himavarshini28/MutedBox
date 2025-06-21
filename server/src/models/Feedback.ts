@@ -1,4 +1,4 @@
-import { Document, Schema, model } from 'mongoose';
+import { Document, Schema, model, Types } from 'mongoose';
 import crypto from 'crypto';
 
 // Define interfaces for our model
@@ -13,6 +13,8 @@ export interface IFeedback extends Document {
   createdAt: Date;
   isActive: boolean;
   responses: IResponse[];
+  user?: Types.ObjectId; // Reference to User
+  isPublic: boolean; // Whether this feedback is public or requires authentication to access
 }
 
 // Define schema
@@ -26,6 +28,14 @@ const feedbackSchema = new Schema<IFeedback>({
   feedback: {
     type: String,
     required: true
+  },
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  isPublic: {
+    type: Boolean,
+    default: true
   },
   createdAt: {
     type: Date,

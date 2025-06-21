@@ -4,10 +4,15 @@ import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
+import { useRouter } from "next/navigation";
 
 export default function CtaSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: false, amount: 0.3 });
+  const router=useRouter();
+  const handleCreateLink=()=>{
+    router.push('/create-feedback');
+  }
   
   return (
     <section ref={ref} className="py-20 relative overflow-hidden">
@@ -43,7 +48,7 @@ export default function CtaSection() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="text-xl text-text-muted mb-8 max-w-2xl mx-auto"
             >
-              Create your first feedback link for free in seconds. No signup required to get started.
+              Create your first feedback link for free in seconds. 
             </motion.p>
             
             <motion.div
@@ -52,7 +57,7 @@ export default function CtaSection() {
               transition={{ duration: 0.5, delay: 0.3 }}
               className="flex flex-col sm:flex-row items-center justify-center gap-4"
             >
-              <Button size="xl" variant="gradient" className="glow group">
+              <Button onClick={handleCreateLink} size="xl" variant="gradient" className="glow group">
                 Create Feedback Link
                 <ArrowRight size={18} className="ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>

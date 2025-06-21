@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Link2, Send, MessageCircle, LineChart } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function HowItWorksSection() {
   const ref = useRef(null);
@@ -39,6 +40,10 @@ export default function HowItWorksSection() {
       delay: 0.4,
     },
   ];
+  const router=useRouter();
+  const handleCreateLink=()=>{
+    router.push('/create-feedback');
+  }
 
   return (
     <section className="py-24 relative overflow-hidden" ref={ref}>
@@ -103,7 +108,7 @@ export default function HowItWorksSection() {
           transition={{ duration: 0.5, delay: 0.6 }}
           className="mt-16 text-center"
         >
-          <Button size="lg" variant="gradient" className="glow group">
+          <Button  onClick={handleCreateLink} size="lg" variant="gradient" className="glow group">
             Create Your Feedback Link
             <ArrowRight size={18} className="ml-2 group-hover:translate-x-1 transition-transform" />
           </Button>

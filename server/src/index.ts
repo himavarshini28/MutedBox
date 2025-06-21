@@ -2,6 +2,7 @@ import express, { Express } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { feedbackRoutes } from './routes/feedback.js';
+import { authRoutes } from './routes/auth.js';
 import { errorHandler } from './middleware/errorMiddleware.js';
 import { requestLogger } from './middleware/loggerMiddleware.js';
 import { validateEnv } from './utils/validateEnv.js';
@@ -20,6 +21,7 @@ app.use(cors());
 app.use(requestLogger);
 
 // Routes
+app.use('/api/auth', authRoutes);
 app.use('/api/feedback', feedbackRoutes);
 
 // Root endpoint

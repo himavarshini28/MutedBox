@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { Feedback } from '../models/Feedback.js';
 import { generateUniqueId } from '../utils/helpers.js';
+import { User } from '../models/User.js';
 
 // Types for requests
 interface CreateFeedbackRequest {
@@ -17,9 +18,12 @@ interface RespondRequest {
 export const createFeedback = async (req: Request<{}, {}, CreateFeedbackRequest>, res: Response) => {
   try {
     const uniqueId = generateUniqueId();
+    
+    // Create the feedback with user reference if authenticated
     const newFeedback = new Feedback({
       uniqueId,
-      feedback: req.body.feedback || 'Anonymous feedback'
+      feedback: req.body.feedback || 'Anonymous feedback',
+      user: req.userId // Will be undefined if not authenticated
     });
 
     await newFeedback.save();
@@ -199,6 +203,74 @@ export const getAllFeedback = async (_req: Request, res: Response) => {
       success: false,
       message: 'Error fetching all feedback',
       error: error.message
+    });
+  }
+};
+
+/**
+ * Get all feedbacks created by the authenticated user
+ */
+export const getUserFeedbacks = async (req: Request, res: Response): Promise<void> => {
+  try {
+    if (!req.userId) {
+      res.status(401).json({ message: 'Not authenticated' });
+      return;
+    }
+    
+    const feedbacks = await Feedback.find({ user: req.userId })
+      .sort({ createdAt: -1 })
+      .select('uniqueId feedback createdAt isActive responses');
+    
+    res.json({
+      success: true,
+      count: feedbacks.length,
+      data: feedbacks
+    });
+  } catch (err: any) {
+    console.error('Error fetching user feedbacks:', err);
+    res.status(500).json({
+      success: false,
+      message: err.message || 'Error fetching feedbacks'
+    });
+  }
+};
+
+/**
+ * Get feedback analytics for the authenticated user
+ */
+export const getUserFeedbackStats = async (req: Request, res: Response): Promise<void> => {
+  try {
+    if (!req.userId) {
+      res.status(401).json({ message: 'Not authenticated' });
+      return;
+    }
+    
+    const feedbacks = await Feedback.find({ user: req.userId });
+    
+    // Calculate stats
+    const totalFeedbackForms = feedbacks.length;
+    let totalResponses = 0;
+    let activeForms = 0;
+    
+    feedbacks.forEach(feedback => {
+      totalResponses += feedback.responses.length;
+      if (feedback.isActive) activeForms++;
+    });
+    
+    res.json({
+      success: true,
+      stats: {
+        totalFeedbackForms,
+        totalResponses,
+        activeForms,
+        averageResponsesPerForm: totalFeedbackForms > 0 ? (totalResponses / totalFeedbackForms).toFixed(1) : 0
+      }
+    });
+  } catch (err: any) {
+    console.error('Error fetching user feedback stats:', err);
+    res.status(500).json({
+      success: false,
+      message: err.message || 'Error fetching feedback stats'
     });
   }
 };
